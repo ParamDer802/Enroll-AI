@@ -9,7 +9,8 @@ A responsive, local-first React/TypeScript PWA for importing enrollment rosters,
 Requirements: Node.js 22.12+ (tested with Node 24), npm, and a current browser with camera, IndexedDB and Web Locks support.
 
 ```powershell
-cd AIML_Group_no._3
+git clone https://github.com/ParamDer802/Enroll-AI.git
+cd Enroll-AI
 npm ci
 npm run setup:vision
 npm run dev
