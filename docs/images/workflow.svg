@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="260" viewBox="0 0 1500 260" role="img" aria-labelledby="title desc">
+  <title id="title">The ENROLL-AI workflow</title>
+  <desc id="desc">Import and organize students; check the camera frame; capture a JPEG; review session rules when required; verify and save locally; export photos and reports.</desc>
+  <rect width="1500" height="260" rx="20" fill="#f3f6ed"/>
+  <g fill="#ffffff" stroke="#cbdac8" stroke-width="2">
+    <rect x="25" y="40" width="220" height="180" rx="16"/><rect x="271" y="40" width="220" height="180" rx="16"/>
+    <rect x="517" y="40" width="220" height="180" rx="16"/><rect x="763" y="40" width="220" height="180" rx="16"/>
+    <rect x="1009" y="40" width="220" height="180" rx="16"/><rect x="1255" y="40" width="220" height="180" rx="16"/>
+  </g>
+  <g fill="#285e49" font-family="Segoe UI,Arial,sans-serif" font-size="25" text-anchor="middle">
+    <text x="135" y="85">01</text><text x="381" y="85">02</text><text x="627" y="85">03</text><text x="873" y="85">04</text><text x="1119" y="85">05</text><text x="1365" y="85">06</text>
+    <g fill="#163b32" font-weight="600"><text x="135" y="135">Import &amp; organize</text><text x="381" y="135">Check the frame</text><text x="627" y="135">Capture JPEG</text><text x="873" y="135">Review rules</text><text x="1119" y="135">Verify &amp; save</text><text x="1365" y="135">Export results</text></g>
+    <g fill="#5c7167" font-size="20"><text x="135" y="174">Roster + session</text><text x="381" y="174">Quality + stability</text><text x="627" y="174">Camera resolution</text><text x="873" y="174">When required</text><text x="1119" y="174">Local database</text><text x="1365" y="174">Photos + report</text></g>
+  </g>
+  <g fill="none" stroke="#285e49" stroke-width="3"><path d="M247 130h20m-7-6 7 6-7 6M493 130h20m-7-6 7 6-7 6M739 130h20m-7-6 7 6-7 6M985 130h20m-7-6 7 6-7 6M1231 130h20m-7-6 7 6-7 6"/></g>
+</svg>

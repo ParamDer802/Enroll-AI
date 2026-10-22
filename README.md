@@ -67,15 +67,7 @@ Sheet and hand placement are reviewed by an operator against the captured image 
 
 ## How it works
 
-```mermaid
-flowchart LR
-    A[Import roster] --> B[Create session]
-    B --> C[Camera + quality checks]
-    C --> D[Capture JPEG]
-    D --> E[Operator review if required]
-    E --> F[Verify and save locally]
-    F --> G[Export photos + report]
-```
+![Workflow: import and organize, check the frame, capture JPEG, review rules when required, verify and save, export results](docs/images/workflow.svg)
 
 **Built with:** React 19 · TypeScript · Vite · MediaPipe Tasks Vision · Dexie / IndexedDB · Tailwind CSS · JSZip · SheetJS.
 
