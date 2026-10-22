@@ -1,0 +1,10 @@
+{
+  "name": "MediaPipe BlazeFace short-range",
+  "version": "float16/1",
+  "url": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+  "sha256": "b4578f35940bf5a1a655214a1cce5cab13eba73c1297cd78e1a04c2380b0152f",
+  "license": "Apache-2.0",
+  "source": "https://developers.google.com/edge/mediapipe/solutions/vision/face_detector",
+  "purpose": "Face presence and photo composition only; no identity inference",
+  "performance": "Observed 51 ms CPU analysis sample on 2026-10-22 in isolated Chrome using the official MediaPipe portrait and a 480px-wide analysis frame. Single observation, not a benchmark. Target-device validation remains required."
+}
