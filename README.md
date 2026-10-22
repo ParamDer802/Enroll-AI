@@ -1,14 +1,91 @@
-# AIML Group no. 3 — ENROLL-AI V1
+<p align="center">
+  <img src="docs/images/banner.svg" alt="ENROLL-AI — From enrollment list to ready-to-use photos" width="100%">
+</p>
 
-Automated Student Photo Capture — Simple, Fast & Accurate.
+<p align="center">
+  <strong>AIML Group no. 3</strong><br>
+  Student photo capture and enrollment management, built for the browser.
+</p>
 
-A responsive, local-first React/TypeScript PWA for importing enrollment rosters, running capture sessions, checking photo quality, saving enrollment-named JPEGs and exporting results. There is **no face recognition or identity inference**. The operator verifies the student; identity always comes from the selected enrollment record.
+<p align="center">
+  <a href="#see-the-app">Screenshots</a> ·
+  <a href="#run-locally">Quick start</a> ·
+  <a href="docs/AI_PIPELINE.md">AI pipeline</a> ·
+  <a href="docs/USER_GUIDE.md">User guide</a>
+</p>
+
+---
+
+## The idea
+
+Capturing a class roster should not mean manually naming every photograph, tracking progress in a separate spreadsheet, and checking the same photo conditions over and over.
+
+**ENROLL-AI brings that workflow into one place:** import students, organize a session, check the camera frame, review the photo, and export enrollment-named JPEGs with a report. Processing and storage happen on the device.
+
+**Face detection checks the photo; the operator verifies the student.** This project does not perform face recognition or infer anyone’s identity.
+
+## See the app
+
+### A workspace for the whole capture day
+
+![ENROLL-AI dashboard showing the AIML Semester 5 sample roster](docs/images/dashboard.png)
+
+### A searchable student directory
+
+![Student directory with enrollment numbers, generated sample names and capture status](docs/images/students.png)
+
+<details>
+<summary><strong>Session rules, exports and mobile layout</strong></summary>
+
+#### Set the requirements for each session
+
+![Session rules requiring the sheet below the face, both hands visible and the face uncovered](docs/images/session-rules.png)
+
+Sheet and hand placement are reviewed by an operator against the captured image before it is saved. They are not automatically detected.
+
+#### Take the results with you
+
+![Export screen offering ZIP, Excel, CSV and folder output](docs/images/exports.png)
+
+#### Use a smaller screen
+
+<p align="center"><img src="docs/images/mobile.png" alt="ENROLL-AI responsive mobile dashboard" width="300"></p>
+
+</details>
+
+*Screenshots show a local demonstration workspace with generated placeholder names. No real student photographs are included in this repository. The included sample roster contains 79 AIML Semester 5 enrollments; new capture statuses start Pending.*
+
+## What it does
+
+- **Import and organize:** XLSX/XLS/CSV import, column mapping, duplicate checks, searchable rosters and dedicated session queues.
+- **Guide the camera:** MediaPipe face detection plus checks for face position, size, basic roll, lighting, sharpness and stability.
+- **Automate carefully:** cancellable countdown, automatic capture, next-student frame-clear check, pause, skip, retry and explicit retakes.
+- **Review session rules:** optional sheet requirements and custom instructions, with fresh operator confirmation for each photo.
+- **Save consistently:** enrollment-based filenames, transactional IndexedDB storage, save verification and audit events.
+- **Export clearly:** JPEG ZIP archives, Excel/CSV reports and supported-browser folder exports, including review evidence.
+- **Work locally:** responsive PWA, offline app/model caching after the initial load, and no automatic photo uploads.
+
+## How it works
+
+```mermaid
+flowchart LR
+    A[Import roster] --> B[Create session]
+    B --> C[Camera + quality checks]
+    C --> D[Capture JPEG]
+    D --> E[Operator review if required]
+    E --> F[Verify and save locally]
+    F --> G[Export photos + report]
+```
+
+**Built with:** React 19 · TypeScript · Vite · MediaPipe Tasks Vision · Dexie / IndexedDB · Tailwind CSS · JSZip · SheetJS.
+
+The AI model detects faces. Deterministic image and timing checks determine capture readiness. The state machine keeps the selected enrollment, image, save result and queue progression together. Read the [AI pipeline](docs/AI_PIPELINE.md) and [database schema](docs/SCHEMA.md) for implementation details.
 
 ## Run locally
 
-Requirements: Node.js 22.12+ (tested with Node 24), npm, and a current browser with camera, IndexedDB and Web Locks support.
+Use **Node.js 22.12+**, npm, and a current browser with camera, IndexedDB and Web Locks support. Development was verified with Node.js 24 and Chrome.
 
-```powershell
+```bash
 git clone https://github.com/ParamDer802/Enroll-AI.git
 cd Enroll-AI
 npm ci
@@ -16,79 +93,53 @@ npm run setup:vision
 npm run dev
 ```
 
-The development server binds only to `127.0.0.1`. Open its printed URL. For a production/offline preview:
+Open the localhost URL printed in the terminal and allow camera access when starting a capture session. Choose your laptop or USB webcam in the camera selector if the browser selects a virtual camera.
 
-```powershell
+The model and WASM runtime are included. `setup:vision` checks the model checksum and prepares the pinned runtime. Camera capture requires **HTTPS or localhost**.
+
+For a production preview with offline caching:
+
+```bash
 npm run build
 npm run preview
 ```
 
-`setup:vision` verifies the model against the committed SHA-256 and copies the pinned MediaPipe WASM runtime into public assets. The model and runtime are already included in this checkout. The production build refuses to proceed without these offline assets. No model download happens during capture.
+Wait for **Offline ready** after the first production load. The hosted development preview uses restricted access; cloning the project is the reproducible way to review it.
 
-## Capture workflow
+## Verification
 
-This workspace includes the requested **79-student AIML, Semester 5 roster**, from `24012250910001` to `24012250910079`, and its ready-to-start session. Names are generated placeholders, labeled throughout the directory, capture screen and reports. Use the pencil in Students to replace them with confirmed names. All new capture statuses start Pending; no photos or quality results are seeded.
+The latest full verification on **22 October 2026** passed **45 unit/integration tests**, **11 Chrome browser workflows**, and the production build. These are results of that run, not a live CI badge.
 
-The roster is installed once per browser database in an atomic migration. Reopening or updating the app does not duplicate it or overwrite existing enrollments, names, photos or progress. Other browser profiles have their own local records.
+Coverage includes persistence and migration, transaction rollback, capture sequencing, camera recovery, session-rule review, 500-row import, exports and offline loading. Browser tests use isolated profiles and controlled streams, not real students.
 
-1. Import an `.xlsx`, `.xls` or `.csv` roster. Select the enrollment and name columns, review validation, and confirm the import. Only the first worksheet is read. Use text-formatted enrollment cells; zeros already discarded by a numeric spreadsheet cannot be restored.
-2. Create a session and choose its students. Demo data is opt-in and explicitly labeled; it cannot be mixed with real roster data in a session.
-3. Start capture and enable the camera. Verify the displayed enrollment belongs to the student in front of the camera.
-4. The detector checks one face, position, size and basic head roll. Pixel analysis measures brightness and Laplacian sharpness. A stable, acceptable frame starts a three-second countdown. Any failed quality criterion cancels that countdown.
-5. Capture uses the full camera resolution. The JPEG is decoded, saved, read back and verified before the student’s status and audit entry commit in the same IndexedDB transaction.
-6. Auto-next accepts a verified photo after 1.8 seconds. The frame must be clear for 500 ms before the next student is armed. An explicit operator confirmation can release this interlock if the next student is already in place.
-7. Review results in Capture history. Download individual photos, a ZIP with JPEGs and a CSV report, or Excel/CSV reports. Folder export is available where the browser supports it.
-
-Pause, skip with a reason, retry, explicit replacement/retake and manual capture are available. Manual capture requires confirmation and is recorded as a quality override. Browser visibility changes pause analysis. A Web Lock prevents two tabs from capturing into the same local database concurrently.
-
-## Configuration
-
-### Rules for each session
-
-Use **Capture sessions → Edit rules** (or set rules when creating a session). Enable **Require a sheet held with both hands** to require the entire sheet below the face, both hands holding it, and an uncovered face. Optional instructions can add other requirements.
-
-Photos in a session with rules stop at **Review session rules** before storage. The operator inspects the actual captured image, checks every requirement, then chooses **Confirm rules & save photo** or **Retake photo**. This applies to automatic and manual capture. The face detector does not detect paper, hands or text; rule confirmation is explicitly human review. Approval does not carry to another photo, student or retake. Leaving or refreshing with an unreviewed image discards that unsaved image.
-
-Rules cannot be edited while any capture station is open. Changes apply to subsequent captures and retakes; they do not retrospectively certify older photographs. History and reports retain the rules revision, rule text and operator-confirmation timestamp for each new capture. Older photographs remain intact and are labeled as having no recorded rule review.
-
-If the preview is blank, use **Camera** in the capture station to choose your laptop/USB webcam explicitly. A virtual camera may be the browser default. The station displays the connected device name, remembers its actual ID, and refreshes the list when devices change. If a saved device is unavailable, use **Try browser default camera** or choose another device. Switching cameras while paused keeps capture paused. Optional countdown audio does not block camera startup.
-
-Settings expose resolution, mirrored preview, JPEG quality, countdown, auto-capture, auto-next, bounded retries, sound, safe filenames and all quality thresholds. The preview may be mirrored; saved photos are not. Defaults require two seconds of stability and three seconds of countdown. Thresholds need calibration with the actual camera and lighting; they are not guarantees of ID-photo compliance.
-
-## Storage and privacy
-
-The Dexie database `enroll-ai-v1` contains students, sessions, sessionStudents, captures (JPEG Blobs), settings, logs and migration receipts. Capture status is per session so the same student can participate in multiple sessions. Counts are computed from stored data; no operational data is fabricated.
-
-Photos and rosters stay in the browser profile. There are no accounts, server-side student APIs, cloud sync, face embeddings or recognition templates. Use an institution-managed device/profile. Export backups regularly; browser storage may be cleared or evicted. Request persistent storage in Settings where supported. Export is not a full application-state backup/restore.
-
-After the first production load, wait for **Offline ready**. The service worker caches the app, all code chunks, the detector model and both WASM variants. Update prompts are suppressed during capture. Camera use requires HTTPS or localhost; opening files directly or using an insecure LAN address will not provide camera access.
-
-## Main AI project files
-
-- `src/vision/faceDetector.ts`: MediaPipe BlazeFace inference returns normalized face bounds and a basic roll estimate. It never receives student data.
-- `src/vision/qualityEngine.ts`: combines measured image features and spatial/temporal rules. Supporting files implement Laplacian variance, luminance and anchored motion stability.
-- `src/services/session/captureController.ts`: perception-to-action state machine; countdown, capture locks, save verification, replacement, recovery and queue progression.
-
-See [the AI pipeline](docs/AI_PIPELINE.md), [database schema](docs/SCHEMA.md), [acceptance criteria](docs/TASKS.md) and [verification record](docs/PROGRESS.md).
-
-## Tests
-
-```powershell
+```bash
 npm test
 npm run build
+
+# Browser tests require installed Chrome and the public test fixture:
+node scripts/setup-test-fixture.mjs
 npm run test:e2e
 ```
 
-Unit/integration tests use `fake-indexeddb` and disposable storage. The Windows runner creates a distinct temporary directory to avoid sandbox rename conflicts. Browser tests use an isolated Chrome profile and never access a physical camera. The real-inference test expects the official MediaPipe portrait fixture at `.local/fixtures/portrait.jpg`; download it with `node scripts/setup-test-fixture.mjs`. This test-only file is ignored by Git and not deployed. Chrome must be installed; adjust `channel` in `playwright.config.ts` if needed. The test server binds to loopback on port 4174.
+See the [verification record](docs/PROGRESS.md) for evidence and remaining hardware checks.
 
-## Known operational limits
+## Explore the code
 
-- Detection is not recognition, liveness verification, a proof of identity, or a certified photo-compliance assessment. Only basic roll is estimated; full yaw/pitch is not claimed.
-- Inference runs synchronously on small frames at up to 8 Hz using the CPU. The UI reports measured analysis time. Device-specific responsiveness and thermal behavior require testing on the intended phones/webcams.
-- ZIP export holds the archive in memory; exports over 500 MB are refused with a folder/individual-photo alternative. Export large sessions in an environment with enough storage/memory.
-- Sessions retain their persisted queue after refresh. A previously active session can be resumed; the app never discards saved photos on startup. No backend authentication or shared multi-device database is included because this version is browser-local.
-- Physical USB switching/disconnection, Android installation and the actual 500-person capture day still require target-device acceptance testing. Automated fixtures are not evidence of field accuracy.
+- [`src/vision/`](src/vision/) — face detection, lighting, sharpness and stability checks.
+- [`captureController.ts`](src/services/session/captureController.ts) — capture state machine and queue coordination.
+- [`src/database/`](src/database/) — schema, migrations, session rules and atomic saves.
+- [`src/pages/`](src/pages/) — dashboard, rosters, capture station, history and exports.
+- [`src/tests/`](src/tests/) and [`e2e/`](e2e/) — unit, storage and browser workflow tests.
+- [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) — full workflow, camera setup and operational notes.
 
-## Upstream references
+## Scope and next steps
 
-Implementation follows the [MediaPipe Face Detector web guide](https://developers.google.com/edge/mediapipe/solutions/vision/face_detector/web_js). The official versioned model source and checksum are recorded in `model-manifest.json`; MediaPipe is Apache-2.0. SheetJS 0.20.3 is pinned from the [official SheetJS distribution](https://docs.sheetjs.com/docs/getting-started/installation/nodejs/). npm packages are pinned and the lockfile is committed.
+This is a browser-local student project. It does not include cloud synchronization, user roles, face recognition, liveness detection, automatic sheet/hand recognition, or identity verification. Photo-quality thresholds need calibration on the actual capture device. Clearing browser data can remove records; export backups regularly.
+
+Planned improvements:
+
+- Full workspace backup and restore.
+- Enrollment-text checking on the held sheet, with operator review of mismatches.
+- Representative camera testing and quality-threshold calibration.
+
+The [model manifest](model-manifest.json) records the model source and checksum. Dependency versions are pinned in the lockfile; upstream references and licensing notes are in the [user guide](docs/USER_GUIDE.md#upstream-references).

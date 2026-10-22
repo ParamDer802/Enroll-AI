@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="460" viewBox="0 0 1600 460" role="img" aria-labelledby="title desc">
+  <title id="title">ENROLL-AI — From enrollment list to ready-to-use photos</title>
+  <desc id="desc">AIML Group 3. Student photo automation with on-device processing, quality checks and operator review.</desc>
+  <rect width="1600" height="460" rx="28" fill="#102e2b"/>
+  <circle cx="1460" cy="50" r="310" fill="#1d443b"/>
+  <circle cx="1530" cy="400" r="230" fill="#285e49"/>
+  <g font-family="Segoe UI,Arial,sans-serif">
+    <text x="78" y="76" fill="#b5ce9d" font-size="19" letter-spacing="4">AIML GROUP 3 · COMPUTER VISION PROJECT</text>
+    <text x="72" y="182" fill="#ffffff" font-size="94" font-weight="700">ENROLL-AI</text>
+    <text x="78" y="249" fill="#e1eae2" font-size="32">From enrollment list to ready-to-use photos.</text>
+    <text x="78" y="297" fill="#acc5bb" font-size="23">Import. Capture. Review. Export.</text>
+    <g font-size="19" fill="#e5efdf">
+      <rect x="78" y="346" width="224" height="48" rx="24" fill="#285044"/><text x="107" y="378">On-device processing</text>
+      <rect x="316" y="346" width="200" height="48" rx="24" fill="#285044"/><text x="348" y="378">Quality checks</text>
+      <rect x="530" y="346" width="224" height="48" rx="24" fill="#285044"/><text x="562" y="378">Operator review</text>
+    </g>
+  </g>
+  <g transform="translate(1180 92)">
+    <rect width="260" height="284" rx="22" fill="#f1f5e9" transform="rotate(7 130 142)"/>
+    <rect x="28" y="27" width="204" height="184" rx="12" fill="#dfebd9"/>
+    <circle cx="130" cy="91" r="34" fill="#527864"/>
+    <path d="M65 185c0-44 27-67 65-67s65 23 65 67" fill="#527864"/>
+    <path d="M48 69V47h22M190 47h22v22M48 169v22h22M190 191h22v-22" fill="none" stroke="#255c43" stroke-width="5" stroke-linecap="round"/>
+    <rect x="34" y="233" width="146" height="9" rx="4" fill="#b7c8b0"/>
+    <rect x="34" y="252" width="108" height="7" rx="3" fill="#d1ddc9"/>
+  </g>
+</svg>
