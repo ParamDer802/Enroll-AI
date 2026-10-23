@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/banner.svg" alt="ENROLL-AI — From enrollment list to ready-to-use photos" width="100%">
+  <img src="docs/images/poster.svg" alt="ENROLL-AI — Student photo capture and enrollment management" width="100%">
 </p>
 
 <p align="center">
